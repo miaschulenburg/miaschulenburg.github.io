@@ -20,7 +20,7 @@ var ListenWithMe = (function() {
 
   function init() {
     getCurrentTrack().then(function(data) {
-      console.log(data)
+      //console.log(data['@attr'])
       try {
         currentSong.nowPlaying = data['@attr'].nowplaying;        
       } catch(err) {
@@ -46,7 +46,8 @@ var ListenWithMe = (function() {
   function refresh() {
     console.log("ping");
     getCurrentTrack().then(function(data) {
-      if(currentSong.track !== data.name && currentSong.track !== data.artist['#text']) {
+      //if(currentSong.track !== data.name && currentSong.track !== data.artist['#text']) {
+      if(currentSong.track !== data.name) {
         // kinda lazy
         init();
       }
@@ -80,8 +81,39 @@ var ListenWithMe = (function() {
     })
   }
 
+  // Make a call to Last FM to get album info;
+  function getAlbumInfo() { 
+    var url = "//ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=" + LASTFM_API_KEY + "&artist=" + currentSong.artist + "&album=" + currentSong.album + "&format=json";
+
+    return new Promise(function(resolve, reject) {
+      var req = new XMLHttpRequest();
+      req.open('GET', url);
+      req.onload = function() {
+        if (req.status == 200) {
+          var data = JSON.parse(req.response);
+          try {
+            resolve(data.tracks);
+          } catch(err) {
+            reject(err);
+          }
+        }
+        else {
+          reject(Error(req.statusText));
+        }
+      };
+      req.onerror = function() {
+        reject(Error("Network Error"));
+      };
+      req.send();
+    })
+  }
+
   function updateTitle() {
-    document.title = currentSong.track + " by " + currentSong.artist;
+    if (currentSong.nowPlaying) {
+      document.title = "▷ " + currentSong.track + " by " + currentSong.artist;
+    } else {
+      document.title = currentSong.track + " by " + currentSong.artist;
+    }
   }
 
   function updateInfo() {
