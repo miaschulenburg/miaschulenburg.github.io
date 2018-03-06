@@ -1,0 +1,27 @@
+*{box-sizing: border-box;}
+
+html {
+    margin: 0px;
+    min-height: 100vh;
+}
+
+body {
+    margin:100px;
+    background: #000000;
+    font-family: sans-serif;
+    justify-content: center;
+}
+
+a {
+    font-size: 40px;
+    color: rgba(255,255,255, 0.7);
+    text-decoration: none;
+}
+
+a:hover {
+    color: rgba(255,255,255, 1.0);
+}
+
+a:active {
+    color: rgba(250,105,0, 1.0);
+}

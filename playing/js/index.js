@@ -1,5 +1,5 @@
 var ListenWithMe = (function() {
-        
+
   // Add your own config here
   var LASTFM_API_KEY = "27c99cb8d57854d6853f054e70fe94d6";
   var LASTFM_USERNAME = "itchy1337";
@@ -22,7 +22,7 @@ var ListenWithMe = (function() {
     getCurrentTrack().then(function(data) {
       //console.log(data['@attr'])
       try {
-        currentSong.nowPlaying = data['@attr'].nowplaying;        
+        currentSong.nowPlaying = data['@attr'].nowplaying;
       } catch(err) {
         console.log(err);
       }
@@ -55,7 +55,7 @@ var ListenWithMe = (function() {
   }
 
   // Make a call to Last FM to get your latest played tracks;
-  function getCurrentTrack() { 
+  function getCurrentTrack() {
     var url = "//ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=" + LASTFM_USERNAME + "&api_key=" + LASTFM_API_KEY + "&format=json";
 
     return new Promise(function(resolve, reject) {
@@ -82,7 +82,7 @@ var ListenWithMe = (function() {
   }
 
   // Make a call to Last FM to get album info;
-  function getAlbumInfo() { 
+  function getAlbumInfo() {
     var url = "//ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=" + LASTFM_API_KEY + "&artist=" + currentSong.artist + "&album=" + currentSong.album + "&format=json";
 
     return new Promise(function(resolve, reject) {

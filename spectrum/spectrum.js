@@ -23,7 +23,7 @@ function draw() {
     var logbands = fft.logAverages(octaves);
     var dim = logbands.length;
     
-    background(11);
+    background(0);
     colorMode(HSB);
     strokeWeight(width / dim + 2);
     
