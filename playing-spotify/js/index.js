@@ -12,24 +12,58 @@ function millisToMinutesAndSeconds(millis) {
 }
 
 var template = function (data) {
-  return `
-    <div class="main-wrapper">
-      <div class="now-playing__img">
-        <img src="${data.item.album.images[0].url}">
-      </div>
-      <div class="now-playing__side">
-        <div class="now-playing__name">${data.item.name}</div>
-        <div class="now-playing__artist">${data.item.artists[0].name}</div>
-        <div class="now-playing__album">${data.item.album.name}</div>
-        <div class="now-playing__status">${data.is_playing ? '►' : '❙❙'} ${millisToMinutesAndSeconds(data.item.duration_ms)}</div>
-        <div class="progress">
-          <div class="progress__bar" style="width:${data.progress_ms * 100 / data.item.duration_ms}%"></div>
+  if (show_bg) {
+    return `
+      <div class="main-wrapper">
+        <div class="now-playing__img">
+          <img src="${data.item.album.images[0].url}">
+        </div>
+        <div class="now-playing__side">
+          <div class="now-playing__name">${data.item.name}</div>
+          <div class="now-playing__artist">${data.item.artists[0].name}</div>
+          <div class="now-playing__album">${data.item.album.name}</div>
+          <div class="now-playing__status">${data.is_playing ? '►' : '❙❙'} ${millisToMinutesAndSeconds(data.item.duration_ms)}</div>
+          <div class="progress">
+            <div class="progress__bar" style="width:${data.progress_ms * 100 / data.item.duration_ms}%"></div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="background" style="background-image:url(${data.item.album.images[0].url})"></div>
-  `;
+      <div class="background" style="background-image:url(${data.item.album.images[0].url})"></div>
+    `;
+  } else {
+    return `
+      <div class="main-wrapper">
+        <div class="now-playing__img">
+          <img src="${data.item.album.images[0].url}">
+        </div>
+        <div class="now-playing__side">
+          <div class="now-playing__name">${data.item.name}</div>
+          <div class="now-playing__artist">${data.item.artists[0].name}</div>
+          <div class="now-playing__album">${data.item.album.name}</div>
+          <div class="now-playing__status">${data.is_playing ? '►' : '❙❙'} ${millisToMinutesAndSeconds(data.item.duration_ms)}</div>
+          <div class="progress">
+            <div class="progress__bar" style="width:${data.progress_ms * 100 / data.item.duration_ms}%"></div>
+          </div>
+        </div>
+      </div>
+      <div class="background" style=""></div>
+    `;
+  }
 };
+
+$(document).ready(function(){
+    $("#js-background").click(function(){
+        $(this).css("background-color", "black");
+    });
+});
+
+var show_bg = true;
+$(document).keydown(function(keyEvent) {
+  if(keyEvent.keyCode == 66){
+    $('.background').css("background-image", "");
+    show_bg = !show_bg;
+  }
+});
 
 spotifyPlayer.on('update', response => {
   mainContainer.innerHTML = template(response);
