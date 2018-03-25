@@ -1,4 +1,14 @@
 var spotifyPlayer = new SpotifyPlayer();
+var show_bg, show_name, show_artist, show_album, show_status, show_bar;
+
+function updateSettings() {
+  show_bg = $("#menu-show-bg").prop("checked");
+  show_name = $("#menu-show-name").prop("checked");
+  show_artist = $("#menu-show-artist").prop("checked");
+  show_album = $("#menu-show-album").prop("checked");
+  show_status = $("#menu-show-status").prop("checked");
+  show_bar = $("#menu-show-bar").prop("checked");
+};
 
 function millisToMinutesAndSeconds(millis) {
   var minutes = Math.floor(millis / 60000);
@@ -10,30 +20,33 @@ $(document).ready(function () {
   $("#js-btn-login").click(function () {
     spotifyPlayer.login();
   });
-});
-
-var show_bg = true;
-$(document).keydown(function (keyEvent) {
-  if (keyEvent.keyCode == 66) {
-    show_bg = !show_bg;
-  };
-});
-
-$(document).keydown(function (keyEvent) {
-  if(keyEvent.keyCode == 76){
+  $("#js-btn-logout").click(function () {
     spotifyPlayer.logout();
+  });
+  
+  $(":input").click(updateSettings);
+  
+  updateSettings();
+});
+
+$(document).keydown(function (keyEvent) {
+  if (keyEvent.keyCode == 77) {
+    $("#js-menu-container").animate({width: "toggle", opacity: "toggle"});
   };
 });
 
 spotifyPlayer.on('update', response => {
   $(".now-playing__img").html("<img src="+response.item.album.images[0].url+">");
-  $(".now-playing__name").text(response.item.name);
-  $(".now-playing__artist").text(response.item.artists[0].name);
-  $(".now_playing__album").text(response.item.album.name);
-  var symbol = response.is_playing ? '► ' : '❙❙ ';
-  $(".now-playing__status").text(symbol + millisToMinutesAndSeconds(response.item.duration_ms));
-  $(".progress__bar").css("width", response.progress_ms * 100 / response.item.duration_ms+"%");
+  
   show_bg ? $(".background").css("background-image", "url("+response.item.album.images[0].url+")") : $(".background").css("background-image", "");
+  
+  show_name ? $(".now-playing__name").show().text(response.item.name) : $(".now-playing__name").hide();
+  show_artist ? $(".now-playing__artist").show().text(response.item.artists[0].name) : $(".now-playing__artist").hide();
+  show_album ? $(".now-playing__album").show().text(response.item.album.name) : $(".now-playing__album").hide();
+  
+  var symbol = response.is_playing ? '► ' : '❙❙ ';
+  show_status ? $(".now-playing__status").show().text(symbol + millisToMinutesAndSeconds(response.item.duration_ms)) : $(".now-playing__status").hide();
+  show_bar ? $(".progress__bar").css("width", response.progress_ms * 100 / response.item.duration_ms+"%").parent().show() : $(".progress__bar").parent().hide();
 });
 
 spotifyPlayer.on('login', user => {

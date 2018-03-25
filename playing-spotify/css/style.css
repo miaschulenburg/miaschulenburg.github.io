@@ -7,6 +7,7 @@
 html, body {
   height: 100%;
 }
+
 body {
   background-color: #000;
   color: #fff;
@@ -57,14 +58,14 @@ body {
 .now-playing__album {
   opacity: 0.6;
   font-weight: 200;
-  margin-bottom: 1.0em;
+  margin-bottom: 0.2em;
 }
 
 .now-playing__status {
   opacity: 0.6;
   font-size: 0.8em;
   font-weight: 200;
-  margin-bottom: 0.2em;
+  margin-top: 1.0em;
 }
 
 .now-playing__img {
@@ -91,12 +92,13 @@ body {
   border: 0.1em solid #fff;
   height: 1em;
   max-width: 80vmin;
+  margin-top: 0.2em;
 }
 
 .progress__bar {
   background-color: #fff;
   border: 0.1em solid transparent;
-  height: 0.8em;
+  height: 100%;
 }
 
 /** Background **/
@@ -107,7 +109,8 @@ body {
   bottom: 0;
   background-size: cover;
   background-position: center center;
-  filter: blur(4.0em) opacity(0.4);
+  opacity: 0.4;
+  filter: blur(4.0em);
   position: absolute;
 }
 
@@ -131,4 +134,83 @@ body {
 
 .main-container {
   flex: 1;
+}
+
+/** Menu **/
+#js-menu-container {
+  position: absolute;
+  z-index: 100;
+  display: none;
+  background-color: #000;
+  height: 100%;
+  padding: 10px;
+  border-right: 0.2em solid #1ecd97;
+}
+
+#menu {
+  align-items: center;
+  white-space: nowrap;
+  margin: 10px;
+}
+
+.labeled-switch {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  width: 12em;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  margin: 8px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: #000;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #1ecd97;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #1ecd97;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.btn--logout {
+  position: absolute;
+  margin: 20px;
+  bottom: 0;
+  left: 0;
 }
