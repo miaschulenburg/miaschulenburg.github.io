@@ -1,8 +1,3 @@
-var mainContainer = document.getElementById('js-main-container'),
-    loginContainer = document.getElementById('js-login-container'),
-    loginButton = document.getElementById('js-btn-login'),
-    background = document.getElementById('js-background');
-
 var spotifyPlayer = new SpotifyPlayer();
 
 function millisToMinutesAndSeconds(millis) {
@@ -11,76 +6,50 @@ function millisToMinutesAndSeconds(millis) {
   return (seconds == 60 ? (minutes+1) + ":00" : minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
 }
 
-var template = function (data) {
-  if (show_bg) {
-    return `
-      <div class="main-wrapper">
-        <div class="now-playing__img">
-          <img src="${data.item.album.images[0].url}">
-        </div>
-        <div class="now-playing__side">
-          <div class="now-playing__name">${data.item.name}</div>
-          <div class="now-playing__artist">${data.item.artists[0].name}</div>
-          <div class="now-playing__album">${data.item.album.name}</div>
-          <div class="now-playing__status">${data.is_playing ? '►' : '❙❙'} ${millisToMinutesAndSeconds(data.item.duration_ms)}</div>
-          <div class="progress">
-            <div class="progress__bar" style="width:${data.progress_ms * 100 / data.item.duration_ms}%"></div>
-          </div>
-        </div>
-      </div>
-      <div class="background" style="background-image:url(${data.item.album.images[0].url})"></div>
-    `;
-  } else {
-    return `
-      <div class="main-wrapper">
-        <div class="now-playing__img">
-          <img src="${data.item.album.images[0].url}">
-        </div>
-        <div class="now-playing__side">
-          <div class="now-playing__name">${data.item.name}</div>
-          <div class="now-playing__artist">${data.item.artists[0].name}</div>
-          <div class="now-playing__album">${data.item.album.name}</div>
-          <div class="now-playing__status">${data.is_playing ? '►' : '❙❙'} ${millisToMinutesAndSeconds(data.item.duration_ms)}</div>
-          <div class="progress">
-            <div class="progress__bar" style="width:${data.progress_ms * 100 / data.item.duration_ms}%"></div>
-          </div>
-        </div>
-      </div>
-      <div class="background" style=""></div>
-    `;
-  }
-};
-
-$(document).ready(function(){
-    $("#js-background").click(function(){
-        $(this).css("background-color", "black");
-    });
+$(document).ready(function () {
+  $("#js-btn-login").click(function () {
+    spotifyPlayer.login();
+  });
 });
 
 var show_bg = true;
-$(document).keydown(function(keyEvent) {
-  if(keyEvent.keyCode == 66){
-    $('.background').css("background-image", "");
+$(document).keydown(function (keyEvent) {
+  if (keyEvent.keyCode == 66) {
     show_bg = !show_bg;
-  }
+  };
+});
+
+$(document).keydown(function (keyEvent) {
+  if(keyEvent.keyCode == 76){
+    spotifyPlayer.logout();
+  };
 });
 
 spotifyPlayer.on('update', response => {
-  mainContainer.innerHTML = template(response);
+  $(".now-playing__img").html("<img src="+response.item.album.images[0].url+">");
+  $(".now-playing__name").text(response.item.name);
+  $(".now-playing__artist").text(response.item.artists[0].name);
+  $(".now_playing__album").text(response.item.album.name);
+  var symbol = response.is_playing ? '► ' : '❙❙ ';
+  $(".now-playing__status").text(symbol + millisToMinutesAndSeconds(response.item.duration_ms));
+  $(".progress__bar").css("width", response.progress_ms * 100 / response.item.duration_ms+"%");
+  //$(".background").css("style", "background-image:url("+response.item.album.images[0].url+")");
+  
+  if(show_bg) {
+    $(".background").html("<img src="+response.item.album.images[0].url+">");
+  } else {
+    $(".background").html("");
+  }
 });
 
 spotifyPlayer.on('login', user => {
   if (user === null) {
-    loginContainer.style.display = 'block';
-    mainContainer.style.display = 'none';
+    $("#js-login-container").css("display", "block");
+    $("#js-main-container").css("display", "none");
   } else {
-    loginContainer.style.display = 'none';
-    mainContainer.style.display = 'block';
+    $("#js-login-container").css("display", "none");
+    $("#js-main-container").css("display", "block");
   }
-});
-
-loginButton.addEventListener('click', () => {
-    spotifyPlayer.login();
 });
 
 spotifyPlayer.init();

@@ -2,11 +2,16 @@
 <html lang="en" >
 
 <head>
+  
   <meta charset="UTF-8">
   <title>Spotify - Now Playing Visualization</title>
   <link rel="stylesheet" href="css/style.css">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src='https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch'></script>
+  <script src='https://spotify-player.herokuapp.com/spotify-player.js'></script>
+  
+  <script src="js/index.js"></script>
   
 </head>
 
@@ -16,12 +21,22 @@
     <div class="login-container hidden" id="js-login-container">
       <button class="btn btn--login" id="js-btn-login">Login with Spotify</button>
     </div>
-    <div class="main-container hidden" id="js-main-container"></div>
+    <div class="main-container hidden" id="js-main-container">
+      <div class="main-wrapper">
+        <div class="now-playing__img"></div>
+        <div class="now-playing__side">
+          <div class="now-playing__name"></div>
+          <div class="now-playing__artist"></div>
+          <div class="now-playing__album"></div>
+          <div class="now-playing__status"></div>
+          <div class="progress">
+            <div class="progress__bar" style="width:50%"></div>
+          </div>
+        </div>
+      </div>
+      <div class="background"></div>
+    </div>
   </div>
-  
-  <script src='https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch'></script>
-  <script src='https://spotify-player.herokuapp.com/spotify-player.js'></script>
-  <script src="js/index.js"></script>
   
 </body>
 
