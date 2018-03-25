@@ -107,7 +107,7 @@ body {
   bottom: 0;
   background-size: cover;
   background-position: center center;
-  filter: blur(10.0em) opacity(0.4);
+  filter: blur(4.0em) opacity(0.4);
   position: absolute;
 }
 

@@ -33,13 +33,7 @@ spotifyPlayer.on('update', response => {
   var symbol = response.is_playing ? '► ' : '❙❙ ';
   $(".now-playing__status").text(symbol + millisToMinutesAndSeconds(response.item.duration_ms));
   $(".progress__bar").css("width", response.progress_ms * 100 / response.item.duration_ms+"%");
-  //$(".background").css("style", "background-image:url("+response.item.album.images[0].url+")");
-  
-  if(show_bg) {
-    $(".background").html("<img src="+response.item.album.images[0].url+">");
-  } else {
-    $(".background").html("");
-  }
+  show_bg ? $(".background").css("background-image", "url("+response.item.album.images[0].url+")") : $(".background").css("background-image", "");
 });
 
 spotifyPlayer.on('login', user => {
