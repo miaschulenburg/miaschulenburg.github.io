@@ -1,3 +1,46 @@
+var show_bg, show_title, show_artist, show_album;
+
+function updateSettings() {
+  show_bg = $("#menu-show-bg").prop("checked");
+  show_title = $("#menu-show-title").prop("checked");
+  show_artist = $("#menu-show-artist").prop("checked");
+  show_album = $("#menu-show-album").prop("checked");
+};
+
+$(document).ready(function () {
+  var idleMouseTimer;
+  var forceMouseHide = false;
+
+  $("body").css('cursor', 'none');
+
+  $("body").mousemove(function(ev) {
+          if(!forceMouseHide) {
+                  $("body").css('cursor', '');
+
+                  clearTimeout(idleMouseTimer);
+
+                  idleMouseTimer = setTimeout(function() {
+                          $("body").css('cursor', 'none');
+
+                          forceMouseHide = true;
+                          setTimeout(function() {
+                                  forceMouseHide = false;
+                          }, 200);
+                  }, 1000);
+          }
+  });
+  
+  $(":input").click(updateSettings);
+  
+  updateSettings();
+});
+
+$(document).keydown(function (keyEvent) {
+  if (keyEvent.keyCode == 77) {
+    $("#js-menu-container").animate({width: "toggle", opacity: "toggle"});
+  };
+});
+
 var ListenWithMe = (function() {
 
   // Add your own config here
@@ -7,7 +50,7 @@ var ListenWithMe = (function() {
   // Elements
 
   var currentSong = {};
-  var REFRESH_INTERVAL = 10000;
+  var REFRESH_INTERVAL = 1000;
   var refreshTimer = null;
 
   return {
@@ -27,7 +70,6 @@ var ListenWithMe = (function() {
       currentSong.artist = data.artist['#text'];
       currentSong.album = data.album['#text'];
       currentSong.image = data.image[3]['#text'];
-      console.log(data.image);
       updateTitle();
       updateInfo();
 
@@ -46,6 +88,7 @@ var ListenWithMe = (function() {
         // kinda lazy
         init();
       }
+      updateInfo();
     })
   }
 
@@ -85,11 +128,13 @@ var ListenWithMe = (function() {
   }
 
   function updateInfo() {
-    $(".track-info--title").text(currentSong.track);
-    $(".track-info--artist").text(currentSong.artist);
-    $(".track-info--album").text(currentSong.album);
     $(".track-artwork--image").attr("src", currentSong.image.replace('/300x300', ''));
-    $(".background").css("background-image", "url("+currentSong.image.replace('/300x300', '')+")");
+    
+    show_title ? $(".track-info--title").show().text(currentSong.track) : $(".track-info--title").hide();
+    show_artist ? $(".track-info--artist").show().text(currentSong.artist) : $(".track-info--artist").hide();
+    show_album ? $(".track-info--album").show().text(currentSong.album) : $(".track-info--album").hide();
+    
+    show_bg ? $(".background").css("background-image", "url("+currentSong.image.replace('/300x300', '')+")") : $(".background").css("background-image", "");
   }
 
 })();
