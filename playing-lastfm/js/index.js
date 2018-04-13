@@ -5,10 +5,6 @@ var ListenWithMe = (function() {
   var LASTFM_USERNAME = "itchy1337";
 
   // Elements
-  var $trackTitle = document.getElementsByClassName('track-info--title')[0]
-  var $trackArtist = document.getElementsByClassName('track-info--artist')[0]
-  var $trackAlbum = document.getElementsByClassName('track-info--album')[0]
-  var $trackImage = document.getElementsByClassName('track-artwork--image')[0]
 
   var currentSong = {};
   var REFRESH_INTERVAL = 10000;
@@ -31,11 +27,10 @@ var ListenWithMe = (function() {
       currentSong.artist = data.artist['#text'];
       currentSong.album = data.album['#text'];
       currentSong.image = data.image[3]['#text'];
+      console.log(data.image);
       updateTitle();
       updateInfo();
 
-    }).then(function(data) {
-      console.log(data)
     })
 
     if(!refreshTimer) {
@@ -81,33 +76,6 @@ var ListenWithMe = (function() {
     })
   }
 
-  // Make a call to Last FM to get album info;
-  function getAlbumInfo() {
-    var url = "//ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=" + LASTFM_API_KEY + "&artist=" + currentSong.artist + "&album=" + currentSong.album + "&format=json";
-
-    return new Promise(function(resolve, reject) {
-      var req = new XMLHttpRequest();
-      req.open('GET', url);
-      req.onload = function() {
-        if (req.status == 200) {
-          var data = JSON.parse(req.response);
-          try {
-            resolve(data.tracks);
-          } catch(err) {
-            reject(err);
-          }
-        }
-        else {
-          reject(Error(req.statusText));
-        }
-      };
-      req.onerror = function() {
-        reject(Error("Network Error"));
-      };
-      req.send();
-    })
-  }
-
   function updateTitle() {
     if (currentSong.nowPlaying) {
       document.title = "▷ " + currentSong.track + " by " + currentSong.artist;
@@ -117,10 +85,11 @@ var ListenWithMe = (function() {
   }
 
   function updateInfo() {
-    $trackTitle.innerHTML = currentSong.track;
-    $trackArtist.innerHTML = currentSong.artist;
-    $trackAlbum.innerHTML = currentSong.album;
-    $trackImage.src = currentSong.image.replace('/300x300', '');
+    $(".track-info--title").text(currentSong.track);
+    $(".track-info--artist").text(currentSong.artist);
+    $(".track-info--album").text(currentSong.album);
+    $(".track-artwork--image").attr("src", currentSong.image.replace('/300x300', ''));
+    $(".background").css("background-image", "url("+currentSong.image.replace('/300x300', '')+")");
   }
 
 })();
