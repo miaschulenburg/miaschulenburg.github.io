@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" >
+  
+<head>
+  
+    <meta charset="UTF-8">
+    <title>Coordinate Transform Visualizer</title>
+    <link rel="stylesheet" href="css/style.css">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  
+    <script src="js/three.min.js"></script>
+    <script src="js/src/math/Matrix4.js" type="module"></script>
+    <script src="js/OrbitControls.js"></script>
+    
+    <script src="js/dat.gui.min.js"></script>
+  
+</head>
+
+<body>
+  
+    <div class="container">
+        <div class="content" id="js-content"></div>
+
+        <div class="input">
+            <textarea id="textfield" placeholder="Insert 4x4 transformation matrices here!"></textarea>
+            <div class="button-container">
+                <input class="button" id="button-add" type="submit" value="Add">
+                <input class="button" id="button-clr" type="submit" value="Clear">
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/index.js"></script>
+
+</body>
+  
+</html>
