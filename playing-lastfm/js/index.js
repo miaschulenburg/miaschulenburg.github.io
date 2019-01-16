@@ -1,10 +1,14 @@
-var show_bg, show_title, show_artist, show_album;
+var show_bg, rotate_bg, show_title, show_artist, show_album, rotate_speed;
 
 function updateSettings() {
   show_bg = $("#menu-show-bg").prop("checked");
+  rotate_bg = $("#menu-rotate-bg").prop("checked");
+  rotate_speed = $("#menu-text-speed").val();
   show_title = $("#menu-show-title").prop("checked");
   show_artist = $("#menu-show-artist").prop("checked");
   show_album = $("#menu-show-album").prop("checked");
+  
+  rotate_bg ? $("#menu-text-speed").animate({opacity: "show"}) : $("#menu-text-speed").animate({opacity: "hide"});
 };
 
 $(document).ready(function () {
@@ -134,7 +138,23 @@ var ListenWithMe = (function() {
     show_artist ? $(".track-info--artist").show().text(currentSong.artist) : $(".track-info--artist").hide();
     show_album ? $(".track-info--album").show().text(currentSong.album) : $(".track-info--album").hide();
     
-    show_bg ? $(".background").css("background-image", "url("+currentSong.image.replace('/300x300', '')+")") : $(".background").css("background-image", "");
+    if (show_bg) {
+      $(".background").css("background-image", "url("+currentSong.image.replace('/300x300', '')+")");
+    } else {
+      $(".background").css("background-image", "")
+    }
+    
+    if (rotate_bg) {
+      var width = $(window).width();
+      var height = $(window).height();
+      var diagonal = Math.sqrt(width * width + height * height);
+      var factor = -1.0 * (diagonal / height - 1.0) / 2.0 * 100.0;
+      $(".background").css("background-size", "contain").css("left", factor+"%").css("right", factor+"%").css("top", factor+"%").css("bottom", factor+"%");
+      $(".background").css("-webkit-animation-duration", rotate_speed+"s").css("-moz-animation-duration", rotate_speed+"s").css("-ms-animation-duration", rotate_speed+"s").css("-o-animation-duration", rotate_speed+"s").css("animation-duration", rotate_speed+"s");
+    } else {
+      $(".background").css("background-size", "cover").css("left", "0%").css("right", "0%").css("top", "0%").css("bottom", "0%");
+      $(".background").css("-webkit-animation-duration", "0s").css("-moz-animation-duration", "0s").css("-ms-animation-duration", "0s").css("-o-animation-duration", "0s").css("animation-duration", "0s");
+    }
   }
 
 })();

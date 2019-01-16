@@ -21,9 +21,65 @@ body {
   top: 0;
   bottom: 0;
   background-size: cover;
+  background-repeat: no-repeat;
   background-position: center center;
   filter: blur(4.0em) opacity(0.4);
   position: absolute;
+  
+  -webkit-animation-name: rotate;
+  -webkit-animation-duration: 0s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  
+  -moz-animation-name: rotate;
+  -moz-animation-duration: 0s;
+  -moz-animation-iteration-count: infinite;
+  -moz-animation-timing-function: linear;
+  
+  -ms-animation-name: rotate;
+  -ms-animation-duration: 0s;
+  -ms-animation-iteration-count: infinite;
+  -ms-animation-timing-function: linear;
+  
+  -o-animation-name: rotate;
+  -o-animation-duration: 0s;
+  -o-animation-iteration-count: infinite;
+  -o-animation-timing-function: linear;
+  
+  animation-name: rotate;
+  animation-duration: 0s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@-webkit-keyframes rotate {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@-moz-keyframes rotate {
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+
+@-ms-keyframes rotate {
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+
+@-o-keyframes rotate {
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .container {
@@ -31,6 +87,8 @@ body {
   display: flex;
   justify-content: center;
   height: 100%;
+  overflow: hidden;
+  position: relative;
 }
 
 .track-container {
@@ -150,4 +208,15 @@ input:focus + .slider {
 
 input:checked + .slider:before {
   transform: translateX(26px);
+}
+
+#menu-text-speed {
+    padding: 10px;
+    border: none;
+    resize: none;
+    background: none;
+    color: #fff;
+    font-size: 1em;
+    white-space: nowrap;
+    overflow: hidden;
 }
