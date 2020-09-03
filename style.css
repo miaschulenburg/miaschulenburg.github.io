@@ -18,8 +18,15 @@ h1 {
     color: rgba(250,105,0, 1.0);
 }
 
-a {
+h2 {
     font-size: 40px;
+    text-transform: uppercase;
+    color: rgba(250,105,0, 1.0);
+    margin-bottom: 10px;
+}
+
+a {
+    font-size: 30px;
     color: rgba(255,255,255, 0.7);
     text-decoration: none;
 }
@@ -30,4 +37,12 @@ a:hover {
 
 a:active {
     color: rgba(250,105,0, 1.0);
+}
+
+p {
+    font-size: 20px;
+    color: rgba(255,255,255, 0.7);
+    font-style: italic;
+    margin-top: 10px;
+    margin-bottom: 30px;
 }
